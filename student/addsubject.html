@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GC-IGS</title>
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/font-awesome.min.css" rel="stylesheet">
+	<link href="../css/datepicker3.css" rel="stylesheet">
+	<link href="../css/styles.css" rel="stylesheet">
+
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span></button>
+				<a class="navbar-brand" href="#">GC-IGS<span></span></a>
+			</div>
+		</div>
+		<!-- /.container-fluid -->
+	</nav>
+
+
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div class="profile-sidebar">
+			<div class="profile-userpic">
+				<img src="../img/logo-gc.jpg" class="img-responsive" alt="">
+			</div>
+			<div class="profile-usertitle">
+				<div class="profile-usertitle-name">ADMIN</div>
+				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="divider"></div>
+		<form role="search">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Search">
+			</div>
+		</form>
+		<ul class="nav menu">
+			<li><a href="home.html"><em class="fa fa-dashboard">&nbsp;</em> Home</a></li>
+			<li><a href="students.html"><em class="fa fa-calendar">&nbsp;</em> Students</a></li>
+			<li class="active"><a href="subject.html"><em class="fa fa-bar-chart">&nbsp;</em> Subject</a></li>
+			<!-- <li><a href="billing.html"><em class="fa fa-toggle-off btn-billing">&nbsp;</em> Billing</a></li> -->
+			<li><a href="logout.html"><em class="fa fa-power-off btn-logout">&nbsp;</em> Logout</a></li>
+		</ul>
+	</div>
+	<!--/.sidebar-->
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-md-6">
+						Subject
+					</div>
+				</div>
+			</div>
+			<div class="panel-body" style="overflow-x:auto">
+				<form id="form-serialize">
+					<table class="table  table-responsive" id="dataTable" width="100%" cellspacing="0">
+						<tbody>
+							<tr>
+								<td>Department</td>
+								<td><select name="department" class="form-control">
+									<option value="Master in Business Management">Master in Business Management</option>
+									<option value="Master in Public Administration">Master in Public Administration</option>
+									<option value="Master of Arts in Education">Master of Arts in Education</option>
+									<option value="Master of Arts in Nursing">Master of Arts in Nursing</option>									
+								</select>
+								</td>
+								<td>Semester</td>
+								<td><select name="semester" class="form-control">
+										<option value="1">1st</option>
+										<option value="2">2nd</option>
+										<option value="3">3rd</option>										
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>Course Code</td>
+								<td><input type="text" name="course_code" class="form-control"></td>
+								<td>Course Title</td>
+								<td><input type="text" name="course_title" class="form-control" required> </td>
+							</tr>
+							<tr>
+								<td>Units</td>
+								<td><input type="text" name="units" class="form-control" required></td>
+								<td colspan="2"><button type="button" id="btnAdd" class="btn btn-primary">Save</button></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</form>
+
+			</div>
+		</div>
+		<!-- /.panel-->
+
+		<script src="../js/jquery-3.1.1.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<script src="../js/chart.min.js"></script>
+		<script src="../js/chart-data.js"></script>
+		<script src="../js/easypiechart.js"></script>
+		<script src="../js/easypiechart-data.js"></script>
+		<script src="../js/bootstrap-datepicker.js"></script>
+		<script src="../js/custom.js"></script>
+		<script src="../js/app.js"></script>
+		<script>
+			$('#btnAdd').on("click", function (event) {
+				var formValues = $("#form-serialize").serialize();
+				console.log(formValues)
+
+				var apiUrl = "api/";
+				$.ajax({
+					method: "post",
+					url: apiUrl + "saveSubject.php",
+					data: formValues,
+					success: function (result) {
+						location.href = 'subject.html';
+					},
+					error: function (xhr, status, error) {
+						alert("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+					}
+				});
+
+			});
+		</script>
+</body>
+
+</html>

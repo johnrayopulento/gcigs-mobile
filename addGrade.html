@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GC-IGS</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/datepicker3.css" rel="stylesheet">
+	<link href="css/styles.css" rel="stylesheet">
+	
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span></button>
+						<a class="navbar-brand" href="#">GC-IGS<span></span></a>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+			
+			
+			<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+				<div class="profile-sidebar">
+					<div class="profile-userpic">
+						<img src="img/logo-gc.jpg" class="img-responsive" alt="">
+					</div>
+					<div class="profile-usertitle">
+						<div class="profile-usertitle-name">ADMIN</div>
+						<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="divider"></div>
+				<form role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+				</form>
+				<ul class="nav menu">
+					<li ><a href="home.html"><em class="fa fa-dashboard">&nbsp;</em> Home</a></li>
+					<li><a href="viewInfo.html"><em class="fa fa-user">&nbsp;</em> Profile</a></li>
+					<li  class="active" ><a href="addGrade.html"><em class="fa fa-bar-chart">&nbsp;</em> Grades</a></li>
+					<li><a href="addSchedule.html"><em class="fa fa-calendar btn-schedule">&nbsp;</em> Schedule</a></li> 
+					<li><a href="addBilling.html"><em class="fa fa-bar-chart">&nbsp;</em> Billing</a></li>		
+					<li><a href="logout.html"><em class="fa fa-power-off btn-logout">&nbsp;</em> Logout</a></li>
+				</ul>
+			</div>
+			<!--/.sidebar-->
+			
+				
+			<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" id="print-data">
+				
+				<div class="panel panel-default">
+					
+					<div class="panel-heading details">
+						
+						<div class="row">
+							
+							<div class="col-md-6">
+								
+								<strong> Student Info</strong>
+								
+							</div>
+							
+							<div class="col-md-6" style="display:none;">
+								
+								<input type="number" class="form-control search_snum">
+								
+							</div>
+							
+						</div>
+						
+						<div class="row">
+							
+							<div class="col-md-6">
+								
+								<h5>Student Number: <span class="studentno"> </span></h5>
+								
+								<h5>Full Name: <span class="studentname"></span></h5>
+								
+							</div>
+							
+							<div class="col-md-6">
+								
+								<h5>Course: <span class="studentcourse"></span></h5>
+								
+								<h5>Schorlarship Type: <span class="studentst"></span></h5>
+								
+							</div>
+							
+						</div>
+						
+					</div>
+					
+				</div>
+				
+				<!--/.row-->
+				
+				<div class="panel panel-default">
+					
+					
+					<table class="table  table-responsive" id="tablegrades" width="100%" cellspacing="0">
+						
+						<thead>
+							
+							<th> Code</th>
+							
+							<th>Course title</th>
+							
+							<th>Units</th>
+							
+							<th>Grade</th>
+							
+							<!-- <th>Academic Year</th> -->
+							
+							<th>Remarks</th>
+
+							
+							
+						</thead>
+						
+						<tbody class="grades-row">
+							
+						</tbody>
+						
+					</table>
+					
+				</div>
+				
+				<!-- /.panel-->
+				
+				
+				
+				
+				
+			</div>
+			
+			<script src="js/jquery-3.1.1.js"></script>
+			<script src="js/bootstrap.min.js"></script>
+			<script src="js/bootstrap-datepicker.js"></script>
+			<script src="js/custom.js"></script>
+			<script src="js/app.js"></script>
+			<script src="js/data.js"></script>
+				
+			<script>
+				
+				var degree;
+				var sem;
+				
+
+				
+				var hasData;
+				$(document).ready(function(){										
+					$('.span-grade').hide();				
+					$('.input-grade').hide();	
+					$('.span-grade').css('display','none');
+				var student_no = localStorage.getItem("adminuser")							
+					getStudentInfo(student_no);     
+					degree = $('.studentcourse').text();
+					
+				});
+				/*getStudentDetails*/
+				
+				// $('.search_snum').keyup(function(){
+					
+					// 	var snum = $('.search_snum').val();
+					
+					
+					// 	$('.grades-row').empty();
+					
+					// });
+					
+					
+					function getChecklist(degree){
+						var fsem = [];
+						var ssem = [];
+						var tsem = [];
+						var data = "";
+						var fsemtotalunits,ssemtotalunits,tsemtotalunits;
+						var studentno = $('.studentno').text();
+						$.ajax({
+							
+							method: "get",
+							
+							dataType: "json",
+							
+							url: apiUrl + "getSubject.php",
+							
+							success: function (result) {
+								
+								$(result).each(function(k,v){
+									if(v.department == degree){
+										
+										if(v.semester == 1){
+											fsem.push(v);
+											
+										}
+										
+										if(v.semester == 2){
+											ssem.push(v);
+											
+										}	
+										
+										if(v.semester == 3){
+											tsem.push(v);
+											
+										}	
+										
+									}
+								});
+								
+								data += "<tr><td colspan='5' class='sem-row'><strong>FIRST TRIMESTER</strong></td><tr>";
+									
+									fsemtotalunits = 0;
+									$(fsem).each(function(k,v){
+										
+										fsemtotalunits += parseInt(v.units);
+										
+										data += "<tr class='s-grade-row'  data-grade=''>";											
+											
+											data += "<td class='rsubject_id'>"+v.course_code+"<input type='hidden' name='"+v.id+"'></td>";
+											
+											data += "<td>"+v.course_title+"</td>";
+											
+											data += "<td>"+v.units+"</td>";
+													data += "<td class='span-grade' ><span class='sgrade-"+v.id+"'>"+getVal(v.id,studentno)+"</span></td>";											
+											
+							
+											data += "<td class='span-grade'   ><span class='sg-srem-"+v.id+" srem' >"+getVal(v.id,studentno)+"</span></td>";
+
+										
+										
+											
+											data += "</tr>";
+											
+											
+										});
+										
+										
+										data += "<tr><td colspan='5' class='totalunits'>TOTAL UNITS: "+fsemtotalunits+" </td><tr>";
+											
+											
+											data += "<tr><td colspan='5' class='sem-row'><strong>SECOND TRIMESTER</strong></td><tr>";
+												
+												ssemtotalunits = 0;
+												$(ssem).each(function(k,v){
+													ssemtotalunits += parseInt(v.units);
+													
+													data += "<tr class='s-grade-row'  data-grade=''>";											
+														
+														data += "<td class='rsubject_id'>"+v.course_code+"<input type='hidden' name='"+v.id+"'></td>";
+														
+														data += "<td>"+v.course_title+"</td>";
+														
+														data += "<td>"+v.units+"</td>";
+															data += "<td class='span-grade' ><span class='sgrade-"+v.id+"'>"+getVal(v.id,studentno)+"</span></td>";											
+											
+							
+											data += "<td class='span-grade'   ><span class='sg-srem-"+v.id+" srem' >"+getVal(v.id,studentno)+"</span></td>";
+
+										
+
+								
+														
+														data += "</tr>";
+														
+													});
+													
+													data += "<tr><td colspan='5' class='totalunits'>TOTAL UNITS: "+ssemtotalunits+" </td><tr>";
+														
+														
+														data += "<tr><td colspan='5' class='sem-row'><strong>THIRD TRIMESTER</strong></td><tr>";
+															tsemtotalunits = 0;
+															$(tsem).each(function(k,v){
+																tsemtotalunits += parseInt(v.units);
+																
+																data += "<tr class='s-grade-row'  data-grade=''>";											
+																	
+																	data += "<td class='rsubject_id'>"+v.course_code+"<input type='hidden' name='"+v.id+"'></td>";
+																	
+																	data += "<td>"+v.course_title+"</td>";
+																	
+																	data += "<td>"+v.units+"</td>";
+														data += "<td class='span-grade' ><span class='sgrade-"+v.id+"'>"+getVal(v.id,studentno)+"</span></td>";											
+											
+							
+											data += "<td class='span-grade'   ><span class='sg-srem-"+v.id+" srem' >"+getVal(v.id,studentno)+"</span></td>";
+										
+																	
+												
+																	data += "</tr>";
+																	
+																});
+																
+																data += "<tr><td colspan='5' class='totalunits'>TOTAL UNITS: "+tsemtotalunits+" </td><tr>";
+																	
+																	
+																	$('.grades-row').append(data);
+																	
+																},
+																
+																error: function (xhr, status, error) {
+																	
+																	alert("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+																	
+																}
+																
+															});
+															
+															
+															
+														}				
+														
+														
+														function getVal(id,studentno){
+															
+															var subjectid  = id == undefined ? '' : id;	
+															
+															$.ajax({
+																
+																method: "get",
+																
+																dataType: "json",
+																
+																url: apiUrl + "getChecklist.php?sid="+subjectid+"&studentno="+studentno,
+																
+																success: function (result) {
+																	console.log(result);
+															
+																	$('.sgrade-'+subjectid).text("");
+
+																	$('.sg-srem-'+subjectid).text("");
+
+																	if(result.length > 0){
+																		var grade = parseFloat(result[0].final_grade);
+																		 $('.sgrade-'+subjectid).val(grade);
+																		 $('.sgrade-'+subjectid).text(grade);
+																		
+																			var rm = result[0].remarks;
+
+		
+																				if(rm == "inc" || rm == "nfe"){		
+
+																					console.log(rm)
+																					$('.sgrade-'+subjectid).val("");
+																				$('.sgrade-'+subjectid).text("");																	
+																					$('.sg-srem-'+subjectid).text(result[0].remarks);		
+																					$('.srem-'+subjectid).val(result[0].remarks);
+																				}
+																		
+	 if(grade = 0){
+	 		 $('.sgrade-'+subjectid).text("");
+																			$('.srem-'+subjectid).val("");																										
+																			$('.sg-srem-'+subjectid).text("");
+																		}
+																		else if(grade < 3.0 && grade !=0 ){
+																			$('.srem-'+subjectid).val("passed");																										
+																			$('.sg-srem-'+subjectid).text("passed");
+																		}
+																		
+																		else if(grade > 3.1){
+																			$('.srem-'+subjectid).val("failed");							
+																			$('.sg-srem-'+subjectid).text("failed");							
+																		}
+																		else{
+																			$('.srem-'+subjectid).val(result[0].remarks);	
+																			$('.sg-srem-'+subjectid).text(result[0].remarks);	
+																		}
+																	}
+																	
+																}
+															});
+															//		
+														}
+														
+														
+														
+														
+														function addgrade(subjectid){
+															
+															var s_id = subjectid;
+															
+															var grade = $('.sgrade-'+subjectid).val();
+															
+															var acadyear = $('.saye-'+subjectid).val();
+															
+															var rem;
+															
+															var studentno = $('.studentno').text();
+															
+															var sem = $('.sem').val();
+															
+															
+															
+															
+															if(grade  == ""){
+																$('.srem-'+subjectid).val();																										
+															}
+															
+														else if(grade < 3.0){
+																$('.srem-'+subjectid).val("passed");																										
+															}
+														else if(grade > 3.1){
+																			$('.srem-'+subjectid).val("failed");							
+																		}
+																		else{
+																			$('.srem-'+subjectid).val();	
+																		}
+															
+															rem =	 $('.srem-'+subjectid).val();	
+															
+															$.ajax({
+																
+																method: "POST",
+																
+																url: apiUrl + "saveGrade.php",
+																
+																data : { 
+																	
+																	s_id : s_id,
+																	
+																	grade : grade,																																
+																	
+																	rem : rem,
+																	
+																	studentno : studentno,
+																	
+																	
+																	
+																},
+																
+																success: function (result) {
+																	
+																	alert(result);
+																	
+																	//	location.reload()
+																	
+																	
+																	
+																},
+																
+																error: function (xhr, status, error) {
+																	
+																	getVal(s_id,studentno)
+																}
+																
+															});
+															
+														}
+														
+														
+														
+													</script>
+				</body>
+				
+				</html>	

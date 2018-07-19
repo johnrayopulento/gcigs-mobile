@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GC-IGS</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/datepicker3.css" rel="stylesheet">
+	<link href="css/styles.css" rel="stylesheet">
+
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!--[if lt IE 9]>
+        <script src="js/html5shiv.js"></script>
+        <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span></button>
+					<a class="navbar-brand" href="#">GC-IGS<span></span></a>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+
+
+		<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+			<div class="profile-sidebar">
+				<div class="profile-userpic">
+					<img src="img/logo-gc.jpg" class="img-responsive" alt="">
+				</div>
+				<div class="profile-usertitle">
+					<div class="profile-usertitle-name">ADMIN</div>
+					<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="divider"></div>
+			<form role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search">
+				</div>
+			</form>
+			<ul class="nav menu">
+				<li ><a href="home.html"><em class="fa fa-dashboard">&nbsp;</em> Home</a></li>
+				<li><a href="viewInfo.html"><em class="fa fa-user">&nbsp;</em> Profile</a></li>
+				<li ><a href="addGrade.html"><em class="fa fa-bar-chart">&nbsp;</em> Grades</a></li>
+				<li  ><a href="addSchedule.html"><em class="fa fa-calendar btn-schedule">&nbsp;</em> Schedule</a></li> 
+				<li  class="active"><a href="addBilling.html"><em class="fa fa-bar-chart">&nbsp;</em> Billing</a></li>		
+				<li><a href="logout.html"><em class="fa fa-power-off btn-logout">&nbsp;</em> Logout</a></li>
+			</ul>
+		</div>
+		<!--/.sidebar-->
+
+		<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+
+			<div class="panel panel-default">
+
+
+
+
+
+				<div class="panel-body" style="overflow-x:auto">
+					<form id="form-serialize">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Semester</label>
+									<select name="sem" class="sem form-control">
+										<option value="">--SELECT--</option>
+										<option value="1">1st</option>
+										<option value="2">2nd</option>
+										<option value="3">3rd</option>
+									</select>
+								</div>
+							</div>
+                                            <!-- <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>School Year</label>
+                                                    <input type="text" name="acadyear" class="acadyear form-control" width="50%">                                                    
+                                                </div>
+                                            </div> -->
+                                        </div>                                                                            
+                                      <div class="row">
+                                      	<div class="col-md-6">
+                                      		  <table class="table  table-responsive" id="dataTable" width="100%" cellspacing="0">
+                                        	<input type="hidden" name="studno" class="studno">
+                                        	<tbody>
+                                        		<tr>
+                                        			<td>Units</td>
+                                        			<td><div class="row">
+                                        				<div class="col-md-6"><input type="number"  name="units" class="units form-control" readonly></div>
+                                        				<div class="col-md-6"><input type="number" value="400" class="unit_fee form-control" readonly> </div></td>
+                                        			</tr>
+                                        			<tr>
+                                        				<td>Tuition Fee</td>
+                                        				<td><span class="tuition"></span></td>
+                                        			</tr>
+
+                                        			<tr>
+                                        				<td>Misc Fee</td>
+                                        				<td><input type="number" value="800" name="misc" class="misc form-control addThis" readonly></td>
+                                        					</tr>
+                                        			<tr>
+                                        				<td>ID Card</td>
+                                        				<td><input type="number" value="0" name="idcard" class="idcard form-control addThis" readonly></td>
+                                        			</tr>
+                                        			<tr>
+                                        				<td>Library Fee</td>
+                                        				<td><input type="number" value="300" name="library"  class="library form-control addThis" readonly></td>
+                                        					</tr>
+                                        			<tr>
+                                        				<td>Medical Fee</td>
+                                        				<td><input type="number" value="100" name="medical"  class="medical form-control addThis" readonly></td>
+
+
+
+                                        			</tr>
+                                        			<tr>
+                                        				<td>Testing Fee</td>
+                                        				<td><input type="number" value="400" name="testing"  class="testing form-control addThis" readonly></td>
+                                        					</tr>
+                                        			<tr>
+                                        				<td>Energy Fee</td>
+                                        				<td><input type="number" value="800" name="energy"  class="energy form-control addThis" readonly></td>
+
+                                        			</tr>
+                                        			<tr>
+                                        				<td>Lab Fee</td>
+                                        				<td><input type="number" value="0" name="lab" class="lab form-control addThis" readonly></td>
+                                        					</tr>
+                                        			<tr>
+                                        				<td>Processing Fee</td>
+                                        				<td><input type="number" value="0" name="processing" class="processing form-control addThis" readonly></td>
+                                        			</tr>
+
+
+                                        			<tr>
+
+                                        				<td>Registration Fee</td>
+                                        				<td><input type="number" value="0" name="registration" class="registration form-control addThis " readonly></td>
+                                        					</tr>
+                                        			<tr>
+                                        				<td>Residency Fee</td>
+                                        				<td><input type="number" value="0" name="residency" class="residency form-control addThis" readonly></td>
+
+                                        			</tr>
+
+                                        			<tr>
+                                        				<td colspan="3"><strong>Total Fees</strong></td>
+                                        				<input type="hidden" name="totalFee" id="totalFee" class="form-control">
+                                        				<td colspan="1"><strong><span class="totalfees"></span></strong></td>
+                                        			</tr>
+
+
+                                        		</tr>
+
+                                        	</tbody>
+                                        </table> 
+                                      	</div>
+                                      	
+                                      </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <!-- /.panel-->
+
+
+                            <div class="panel panel-default">
+                            	<div class="panel-body">
+                            		<table class="table table-bordered" id="dataTable2" width="100%" cellspacing="0">
+                            			<tr>
+                            				<th>Or No</th>
+                            				<th>Amount Paid</th>
+                            				<th>Date</th>
+                            				<th>Balance</th>
+
+                            			</tr>
+                            			<tbody id="tbody-payment">
+
+                            			</tbody>
+                            		</table>
+                            	</div>
+                            </div>
+                        </div>  
+
+                    </div>
+                    <!--/.main-->
+
+
+                    <script src="js/jquery-3.1.1.js"></script>
+                    <script src="js/bootstrap.min.js"></script>
+                    <script src="js/bootstrap-datepicker.js"></script>
+                    <script src="js/custom.js"></script>
+                    <script src="js/app.js"></script>
+                    <script src="js/data.js"></script>
+                    <script>
+
+
+                    	var student_no = localStorage.getItem("adminuser");
+
+
+                    	getStudentInfo(student_no);                  
+
+                    	$('.studentno_txt').val(student_no)
+
+                    	var data = " ";
+                    	var studno;
+                    	var degree;
+                    	var sem;
+
+                    	/*hide table initial load*/
+                    	$('#dataTable').hide();
+
+                    	/*getStudentDetails*/
+            //        getStudentInfo(student_no);                    
+
+
+            /*select from dropdown*/
+            $('.sem').on('change',function(){                  
+            	sem = $(this).val();
+            	getStudentSched(sem);
+            	$('#dataTable').show();
+
+            	$("#dataTable tbody").show();
+            	$("#dataTable2 tbody").show();
+            	getBillingDetails(student_no,sem);
+            	showPayment(student_no,sem);
+            	computeUnits()
+            });
+
+
+
+            /*computation of units*/           
+
+                    // $('.units').on('keyup',function(){
+                    //     computeUnits()
+                    //     getFees()
+                    // });
+                    
+                    
+                    getFees()
+                    $('.addThis').keyup(function(){
+                    	getFees()
+                    });
+                    
+                    
+                    /*submit billing*/
+                    $('.btnSubmit').click(function(){
+                    	getFees()
+
+                    	var formValues = $("#form-serialize").serialize();
+                    	console.log(formValues)
+                    	$.ajax({
+                    		method: "post",
+                    		url: apiUrl+"saveBilling.php",
+                    		data : formValues,
+                    		success: function(result){
+                    			console.log(result)
+                                // location.reload();
+                            },
+                            error:function (xhr, status, error){
+                            	alert( "status=" + xhr.responseText + ", error=" + status + ", error=" + error );
+                            }
+                        });
+                    	$("#billing").removeClass("in active");
+                    	$("#tab-bill").removeClass("active");
+                    	$("#payment").addClass("active in");
+                    	$("#tab-pay").addClass("active");
+
+
+                    });
+                    
+                    
+                    $('.btnPay').click(function(){
+                    	var studno = localStorage.getItem("studentinfo")
+                    	var sem = $('.sem').val();
+                    	var billing = localStorage.getItem('billing_id');
+
+                    	var orno = $('.orno').val()
+                    	var payment = $('.payment').val()
+                    	var balance = $('.balance').val();
+                    	$('.pay-studentno').val(studno)
+                    	$('.pay-sem').val(sem)
+                    	$('.pay-billing').val(billing)
+
+
+                    	if(payment >  balance){
+                    		alert("the amountpaid is greater than the balance")
+                    	}
+                    	else{
+                    		var formValues = $("#form-payment").serialize();
+                    		console.log(formValues)
+
+                    		$.ajax({
+                    			method: "post",
+                    			url: apiUrl+"savePayment.php",
+                    			data : formValues,
+                    			success: function(result){
+                    				console.log(result)
+                    				alert("Payment successfully added!");
+                    				location.reload()
+                    			},
+                    			error:function (xhr, status, error){
+                    				alert( "status=" + xhr.responseText + ", error=" + status + ", error=" + error );
+                    			}
+                    		});
+                    	}
+
+                    });
+                    
+                    
+                    
+                    function getStudentSched(sem){
+
+                    	$.ajax({
+                    		method: "get",
+                    		dataType: "json",
+                    		url: apiUrl + "getSchedule.php?type=unit&studentno=" + student_no + "&s="+sem,
+                    		success: function (result) {
+                    			var data = ""
+                    			if (result.length != 0) {
+                    				var units = result[0].total_unit;
+                            //            console.log(units);
+                            localStorage.setItem("units",units)
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                    	console.log("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+                    }
+
+                });
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    function getFees(){
+                    	var totalFee = 0;
+                    	$('.addThis').each(function(k,v) {
+                    		parseItem =  parseInt($(v).val());
+                    		totalFee += parseItem;
+
+
+                    	});
+
+
+                    	$('.totalfees').text("P " + totalFee + ".00");
+                    	$('#totalFee').val(totalFee);
+                 //   console.log(totalFee)    
+                 $('.balance').val(totalFee)
+
+             }
+
+             function computeUnits(){
+             	var tuition;
+             	var getUnits = localStorage.getItem("units");
+             	var unit;
+             //   console.log(getUnits);
+             if(getUnits != ""){
+             	unit = parseInt(getUnits);
+             }else{
+             	unit = 0;
+             }
+             
+             var unit_fee = $('.unit_fee').val();    
+             tuition = parseInt(unit) * unit_fee;
+             console.log(tuition)
+
+             $('.tuition').val(parseInt(tuition))  
+         }
+
+
+     </script>
+ </body>
+
+ </html>

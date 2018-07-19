@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GC-IGS</title>
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/font-awesome.min.css" rel="stylesheet">
+	<link href="../css/datepicker3.css" rel="stylesheet">
+	<link href="../css/dataTable.css"  rel="stylesheet" >
+	<link href="../css/styles.css" rel="stylesheet">
+
+  
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+	
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span></button>
+						<a class="navbar-brand" href="#">GC-IGS<span></span></a>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+			
+			
+			<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+				<div class="profile-sidebar">
+					<div class="profile-userpic">
+						<img src="../img/logo-gc.jpg" class="img-responsive" alt="">
+					</div>
+					<div class="profile-usertitle">
+						<div class="profile-usertitle-name">ADMIN</div>
+						<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="divider"></div>
+				<form role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+				</form>
+				<ul class="nav menu">
+                        <li><a href="home.html"><em class="fa fa-dashboard">&nbsp;</em> Home</a></li>
+                        <li><a href="students.html"><em class="fa fa-user">&nbsp;</em> Students</a></li>
+                        <li><a href="subject.html"><em class="fa fa-bar-chart">&nbsp;</em> Subject</a></li>
+                        <li  class="active"><a href="schedule.html"><em class="fa fa-calendar btn-schedule">&nbsp;</em> Schedule</a></li> 
+                        <li><a href="logout.html"><em class="fa fa-power-off btn-logout">&nbsp;</em> Logout</a></li>
+                    </ul>
+			</div>
+			<!--/.sidebar-->
+			
+			<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-6 col-xs-3">
+                                Schedule
+                                
+							</div>
+							<div class="col-md-6 col-xs-9">
+                                <a href="createschedule.html"><button type="button" class="btn btn-primary" >Create Schedule</button></a>
+                               
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<!-- /.panel-->
+				<!--/.row-->
+				
+				
+				<!-- /.panel-->
+				<div class="row">
+					<div class="col-lg-4">
+                            <div class="form-group">									
+                                   <input type="text" name="acadyear" class="form-control acadyear" placeholder="Academic Year">
+                                </div>
+                             
+                    </div>
+                    <div class="col-lg-4">
+                            <div class="form-group">									
+                                   <input type="text" name="code" class="form-control code" placeholder="Code">
+                                </div>
+                             
+					</div>
+					<div class="col-lg-2">
+                            <div class="form-group">									
+                                    <button type="button" class="btn btn-primary btnSearch">Search</button>
+                                 </div>
+                             
+					</div>
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<table class="table table-responsive" style="border-collapse:collapse;" id="dataTable" width="100%" cellspacing="0">
+									<thead>
+										<tr>
+                                                <th>Code</th>
+                                                <th>Course Code</th>
+                                                <th>Course title</th>
+                                                <th>Units</th>
+                                                <th>Day</th>
+                                                <th>Time</th>
+									</tr>
+									</thead>
+									<tbody class="subject-list">
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!--/.panel-->
+                    </div>
+                    
+                    <div class="col-md-12 stud-list-div">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <table class="table table-responsive" style="border-collapse:collapse;" id="dataTable2" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                    <th>StudentNo</th>
+                                                    <th>Last Name</th>
+                                                    <th>First Name</th>
+                                                    <th>Middle Name</th>
+                                                    <th>Degree</th>
+                                                    <!-- <th>Time</th> -->
+                                        </tr>
+                                        </thead>
+                                        <tbody class="student-list">
+                                            
+                                        </tbody>
+                                    </table>
+
+                                    <div class="student-count"></div>
+                                </div>
+                            </div>
+                            <!--/.panel-->
+                        </div>
+					<!--/.col-->
+				</div>
+			</div>
+			<!--/.main-->
+			
+			
+            <!-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
+            <script src="../js/jquery-3.1.1.js"></script>
+			<script src="../js/bootstrap.min.js"></script>
+			<script src="../js/chart.min.js"></script>
+			<script src="../js/chart-data.js"></script>
+			<script src="../js/easypiechart.js"></script>
+			<script src="../js/easypiechart-data.js"></script>
+			<script src="../js/bootstrap-datepicker.js"></script>
+			<script src="../js/custom.js"></script>
+			<script src="../js/app.js"></script>
+			<script src="../js/dataTable.js"></script>
+
+			<script>
+
+$(document).ready( function () {
+ //   $('#dataTable').dataTable();
+ $(".stud-list-div").hide();
+});
+$('.btnSearch').on('click',function(){
+ $("#dataTable tbody").empty();
+
+    var acadyear = $('.acadyear').val();
+    var code = $('.code').val();
+console.log(acadyear)
+    if(acadyear != "")
+{
+    searchAcadYear(acadyear);
+        $('.code').val("");
+}
+    else
+{
+    searchCode(code);
+}
+   
+});
+
+			//	showSubjects();
+				
+				
+				function searchAcadYear(acadyear) {		
+                    var data = "";			
+                    $.ajax({
+						url: "api/getSchedule.php?acadyear="+acadyear,
+						dataType: "json",
+						success: function (result) {
+                            console.log(result);
+					//		var data = "";
+							for (i = 0; i < result.length; i++) {
+								data += "<tr>"
+                                    data += "<td>"+result[i].code+"</td>";
+                                    data += "<td>"+result[i].course_code+"</td>";
+									data += "<td>"+result[i].course_title+"</td>";
+									data += "<td>"+result[i].units+"</td>";
+									data += "<td>"+result[i].sched_day+"</td>";
+									data += "<td>"+result[i].sched_time+"</td>";
+									data += "<td><button class='btn btn-primary' onclick='viewStudents("+result[i].id+")'>View</button></td>";
+									
+									data += "</tr>";
+								}
+								$('.subject-list').append(data);
+							},
+							error: function (xhr, status, error) {
+								alert("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+							}
+						});
+					}
+                    function searchCode(code) {		
+                        var data = "";			
+                    $.ajax({
+						url: "api/getSchedule.php?code="+code,
+						dataType: "json",
+						success: function (result) {
+                            console.log(result);
+					//		var data = "";
+							for (i = 0; i < result.length; i++) {
+								data += "<tr>"
+                                    data += "<td>"+result[i].code+"</td>";
+                                    data += "<td>"+result[i].course_code+"</td>";
+									data += "<td>"+result[i].course_title+"</td>";
+									data += "<td>"+result[i].units+"</td>";
+									data += "<td>"+result[i].sched_day+"</td>";
+									data += "<td>"+result[i].sched_time+"</td>";
+									data += "<td><button class='btn btn-primary' onclick='viewStudents("+result[i].code+")'>View</button></td>";
+									
+									data += "</tr>";
+								}
+								$('.subject-list').append(data);
+							},
+							error: function (xhr, status, error) {
+								alert("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+							}
+						});
+                    }
+                    
+                    function viewStudents(code){
+                        $.ajax({
+						url: "api/getStudentPerSched.php?code="+code,
+						dataType: "json",
+						success: function (result) {
+                            if(result.length != 0 ){
+                                $(".stud-list-div").show();
+                                $(".student-count").html("Total # of Student : <strong>"+ result.length +"</strong>");
+
+                                console.log(result.length);
+							var data = "";
+							for (i = 0; i < result.length; i++) {
+								data += "<tr>"
+                                    data += "<td>"+result[i].student_no+"</td>";
+                                    data += "<td>"+result[i].lname+"</td>";
+									data += "<td>"+result[i].fname+"</td>";
+									data += "<td>"+result[i].mname+"</td>";
+									data += "<td>"+result[i].degree+"</td>";
+									// data += "<td>"+result[i].sched_time+"</td>";
+									data += "<td><button class='btn btn-primary' onclick='viewStudents("+result[i].code+")'>View</button></td>";
+									
+									data += "</tr>";
+								}
+								$('.student-list').append(data);
+                            }
+                         
+							},
+							error: function (xhr, status, error) {
+								alert("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+							}
+						});
+                    }
+				</script>
+			</body>
+			
+			</html>

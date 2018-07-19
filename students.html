@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GC-IGS</title>
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/font-awesome.min.css" rel="stylesheet">
+	<link href="../css/datepicker3.css" rel="stylesheet">
+	<link href="../css/dataTable.css"  rel="stylesheet" >
+	<link href="../css/styles.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+		<style>
+			.student-actions{
+				margin-left: 10px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span></button>
+						<a class="navbar-brand" href="#">GC-IGS<span></span></a>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+			
+			
+			
+			
+			<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+				<div class="profile-sidebar">
+					<div class="profile-userpic">
+						<img src="../img/logo-gc.jpg" class="img-responsive" alt="">
+					</div>
+					<div class="profile-usertitle">
+						<div class="profile-usertitle-name">ADMIN</div>
+						<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="divider"></div>
+				<form role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+				</form>
+				<ul class="nav menu">
+						<li><a href="home.html"><em class="fa fa-dashboard">&nbsp;</em> Home</a></li>
+						<li  class="active"><a href="students.html"><em class="fa fa-user">&nbsp;</em> Students</a></li>
+						<li><a href="subject.html"><em class="fa fa-bar-chart">&nbsp;</em> Subject</a></li>
+						<li><a href="schedule.html"><em class="fa fa-calendar btn-schedule">&nbsp;</em> Schedule</a></li> 
+						<li><a href="logout.html"><em class="fa fa-power-off btn-logout">&nbsp;</em> Logout</a></li>
+					</ul>
+			</div>
+			<!--/.sidebar-->
+			
+			<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-6 col-xs-3">
+								Student
+							</div>
+							<div class="col-md-6 col-xs-9">
+								<a href="addstudent.html"><button type="button" class="btn btn-primary btnAddStudent" >Add Student</button></a>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<form role="form">
+							<!-- 	<div class="col-md-2">
+								
+								<div class="form-group">
+									<label>Semester</label>
+								</div>
+							</div>
+						<div class="col-md-4 acad-year">
+								<select class="form-control">
+									<option>2017-2018 (1st Semester)</option>
+									<option>2017-2018 (1st Semester)</option>
+									<option>2017-2018 (1st Semester)</option>
+									<option>2017-2018 (1st Semester)</option>
+								</select>
+							</div>
+							<div class="col-md-6">
+								<input type="text" class="form-control" placeholder="Search Student">
+							</div> -->
+						</form>
+					</div>
+				</div>
+				<!-- /.panel-->
+				<div class="row">			
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<table class="table table-responsive" style="border-collapse:collapse;" id="dataTable" width="100%" cellspacing="0">
+									<thead>
+										<tr>
+											<th>Student No</th>
+											<th>Firstname</th>
+											<th>Lastname</th>
+											<th>Department</th>
+											
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody class="student-list">
+										
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!--/.panel-->
+					</div>
+					<!--/.col-->
+				</div>
+				
+			</div>
+			
+			
+			
+			<!--/.main-->
+			
+			
+			<script src="../js/jquery-3.1.1.js"></script>
+			<script src="../js/bootstrap.min.js"></script>
+			<script src="../js/chart.min.js"></script>
+			<script src="../js/chart-data.js"></script>
+			<script src="../js/easypiechart.js"></script>
+			<script src="../js/easypiechart-data.js"></script>
+			<script src="../js/bootstrap-datepicker.js"></script>
+			<script src="../js/custom.js"></script>
+			<script src="../js/app.js"></script>
+			<script src="../js/dataTable.js"></script>
+
+			<script>
+				$(document).ready(function(){	
+				//	$('#dataTable').dataTable();			
+					showStudentList();
+					$('.dataTables_empty').hide();
+					
+				});
+				function showStudentList() {
+					var studentno = localStorage.getItem("username");
+					$.ajax({
+						url: apiUrl + "showStudents.php?",
+						dataType: "json",
+						success: function (result) {
+							var data = "";
+							for (i = 0; i < result.length; i++) {
+								data += "<tr>";
+									data += "<td class='sorting_1'>" + result[i].student_no + "</td>";
+									data += "<td>" + result[i].fname + "</td>";
+									data += "<td>" + result[i].lname + "</td>";
+									data += "<td>" + result[i].degree + "</td>";
+									
+									data += "<td><button title='Schedule' class='btn btn-primary student-actions' onclick='viewInfo("+result[i].student_no+")'><i class='fa fa-user'></i></button>";
+									data += "<button title='Schedule' class='btn btn-primary student-actions' onclick='addSchedule("+result[i].student_no+")'><i class='fa fa-calendar-alt'></i></button>";
+										data += "<button title='Evaluation' class='btn btn-primary student-actions' onclick='addGrades("+result[i].student_no+")'><i class='fa fa-file-alt'></i></button>";
+										data += "<button title='Billing' class='btn btn-primary student-actions' onclick='addBilling("+result[i].student_no+")'><i class='fa fa-money-bill'></button></td>";
+										
+										data += "</tr>";
+									}
+									$('.student-list').append(data);
+								},
+								error: function (xhr, status, error) {
+									alert("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+								}
+							});
+						}
+						function addSchedule(student_no){
+							localStorage.setItem("studentinfo",student_no)	
+							location.href = "addSchedule.html"
+							
+						}
+						function addEvaluation(student_no){
+							localStorage.setItem("studentinfo",student_no)	
+							location.href = "addEvaluation.html"
+						}
+						
+						function addGrades(student_no){
+							localStorage.setItem("studentinfo",student_no)	
+							location.href = "addGrade.html";
+							
+						}
+						function addBilling(student_no){
+							localStorage.setItem("studentinfo",student_no)	
+							location.href = "addBilling.html";
+							
+						}
+						function viewInfo(student_no){
+							localStorage.setItem("studentinfo",student_no)	
+							location.href = "viewInfo.html";
+							
+						}
+					</script>
+				</body>
+				
+				</html>

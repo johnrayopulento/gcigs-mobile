@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GC-IGS</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/datepicker3.css" rel="stylesheet">
+	<link href="css/styles.css" rel="stylesheet">
+	
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span></button>
+						<a class="navbar-brand" href="#">GC-IGS<span></span></a>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+			
+			
+			<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+				<div class="profile-sidebar">
+					<div class="profile-userpic">
+						<img src="img/logo-gc.jpg" class="img-responsive" alt="">
+					</div>
+					<div class="profile-usertitle">
+						<div class="profile-usertitle-name">ADMIN</div>
+						<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="divider"></div>
+				<form role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+				</form>
+				<ul class="nav menu">
+					<li ><a href="home.html"><em class="fa fa-dashboard">&nbsp;</em> Home</a></li>
+					<li><a href="viewInfo.html"><em class="fa fa-user">&nbsp;</em> Profile</a></li>
+					<li ><a href="addGrade.html"><em class="fa fa-bar-chart">&nbsp;</em> Grades</a></li>
+					<li   class="active"><a href="addSchedule.html"><em class="fa fa-calendar btn-schedule">&nbsp;</em> Schedule</a></li> 
+					<li><a href="addBilling.html"><em class="fa fa-bar-chart">&nbsp;</em> Billing</a></li>		
+					<li><a href="logout.html"><em class="fa fa-power-off btn-logout">&nbsp;</em> Logout</a></li>
+				</ul>
+			</div>
+			<!--/.sidebar-->
+			
+			<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+				
+	
+				<div class="panel panel-default">
+				
+					<div class="panel-body" style="overflow-x:auto">									
+						<div class="row">
+							<div class="col-md-6">
+									<div class="form-group">
+											<label>Semester</label>
+											<select name="sem" class="view-sem form-control">
+												<option value="">--SELECT--</option>
+												<option value="1">1st</option>
+												<option value="2">2nd</option>
+												<option value="3">3rd</option>
+											</select>	
+											</div>
+							</div>
+							
+						</div>
+					</div>	
+
+					<div class="panel panel-default">
+					<table class="table table-responsive" id="scheduleTable" width="100%" cellspacing="0">
+							<tr>
+								<th>Code</th>
+								<th>Course Code</th>
+							
+							
+								<th>Day</th>
+								<th>Time</th>
+								<th>Room</th>
+							</tr>
+							<tbody class="sched-row">
+							</tbody>
+						</table>
+						
+					</div>											
+					</div>
+					<!-- /.panel-->														
+				</div>
+				
+				<script src="js/jquery-3.1.1.js"></script>
+				<script src="js/bootstrap.min.js"></script>
+				<script src="js/bootstrap-datepicker.js"></script>
+				<script src="js/custom.js"></script>
+				<script src="js/app.js"></script>
+				<script src="js/data.js"></script>
+				
+				<script>
+					
+					/*getStudentDetails*/
+
+var student_no = localStorage.getItem("adminuser");
+
+               
+getStudentInfo(student_no); 
+					
+					$('.search_snum').keyup(function(){
+						var snum = $('.search_snum').val();
+						getStudentInfo(snum);     
+					});
+					
+					var semester = $('.sem').val()
+					setRegDate()
+					
+					function setRegDate(){
+						var today = new Date();
+						var dd = today.getDate();
+						var mm = today.getMonth()+1; //January is 0!
+						
+						var yyyy = today.getFullYear();
+						if(dd<10){dd='0'+dd} 
+						if(mm<10){mm='0'+mm} 
+						today = yyyy+'-'+mm+'-'+dd;  
+						
+						$('.reg-date').val(today)
+					}
+					
+					
+					
+					
+					$('.btnSaveSched').on('click',function(){ 
+						var code =  $('.rcode').text();
+						var subject_id =  $('.rsubject_id').text();
+						
+						$('.tcode').val(code);
+						$('.tsubject_id').val(subject_id);
+						$('.tstudent_no').val(student_no);
+						
+						var formValues = $("#form-serialize").serialize();
+						console.log(formValues)
+						
+						
+						$.ajax({
+							method: "post",
+							url: apiUrl+"saveStudentSched.php",
+							data : formValues,
+							success: function(result){
+								console.log(result);
+								//location.href = "addSchedule.html";
+								
+								$('.code').val("")
+								$('#dataTable').hide()
+								alert("Sucessfully Submitted")
+								
+								getShedule()
+							},
+							error:function (xhr, status, error){
+								alert( "status=" + xhr.responseText + ", error=" + status + ", error=" + error );
+							}
+						});
+						
+						
+					});
+					
+					
+					$('.sem').change(function(){
+						var sem = $(this).val()
+
+					});
+
+					$('.view-sem').change(function(){
+						var sem = $(this).val()
+						getEformData(student_no,sem);
+
+					});
+					
+					$('.code').keyup(function () {
+						var code = $(this).val()
+						$.ajax({
+							method: "get",
+							dataType: "json",
+							url: apiUrl + "getSchedule.php?code=" + code,
+							success: function (result) {
+								var data = ""
+								if (result.length != 0) {
+									$('#dataTable').show()
+									
+									data += "<tr class='eform'>";
+										data += "<td class='rcode'>"+code+"</td>";
+										data += "<td class='rsubject_id'>"+result[0].course_code+"</td>";
+									
+										data += "<td class='rsched_day'>"+result[0].sched_day+"</td>";
+										data += "<td class='rsched_time'>"+result[0].sched_time+"</td>";
+										data += "</tr>";
+										
+										$('.eform-row').html(data);
+									}
+								}
+								
+							});
+							if(code == ""){
+								$('.eform-row').empty()
+							}
+						});
+						
+						$('.txtSem').keyup(function() {								
+							console.log($(this).val())
+							if($(this).val() != ""){
+								getShedule();
+							}
+							else{
+								$('.eform-row').empty();
+							}
+						});
+						
+						
+						
+						function getStudentSched(){
+							var sem = $('.txtSem').val();
+							$.ajax({
+								method: "get",
+								dataType: "json",
+								url: apiUrl + "getSchedule.php?studentno=" + student_no + "&semester="+sem,
+								success: function (result) {
+									var data = ""
+									if (result.length != 0) {
+										console.log(result)
+									}
+								},
+								error: function (xhr, status, error) {
+									console.log("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+								}
+								
+							});
+						}
+						
+						function getShedule(){
+							
+							$.ajax({
+								method: "get",
+								dataType: "json",
+								url: apiUrl + "getSchedule.php?semester=" + $('.sem').val() + "&studentno=" + student_no + "",
+								success: function (result) {
+									
+									console.log(	)
+									var data = ""
+									if (result.length != 0) {
+										$(result).each(function(k,result){
+											
+											
+											data += "<tr class='eform'>";
+												data += "<td class='rcode'>"+result.code+"</td>";
+												data += "<td class='rsubject_id'>"+result.course_code+"</td>";
+											
+												data += "<td class='rsched_day'>"+result.sched_day+"</td>";
+												data += "<td class='rsched_time'>"+result.sched_time+"</td>";
+												data += "</tr>";
+												
+											});
+											$('.sched-row').append(data);
+										}
+									},
+									error: function (xhr, status, error) {
+										console.log("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+									}
+									
+								});
+							}
+						</script>
+					</body>
+					
+					</html>

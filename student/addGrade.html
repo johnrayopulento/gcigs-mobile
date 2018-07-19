@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GC-IGS</title>
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/font-awesome.min.css" rel="stylesheet">
+	<link href="../css/datepicker3.css" rel="stylesheet">
+	<link href="../css/styles.css" rel="stylesheet">
+	
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span></button>
+						<a class="navbar-brand" href="#">GC-IGS<span></span></a>
+					</div>
+				</div>
+				<!-- /.container-fluid -->
+			</nav>
+			
+			
+			<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+				<div class="profile-sidebar">
+					<div class="profile-userpic">
+						<img src="../img/logo-gc.jpg" class="img-responsive" alt="">
+					</div>
+					<div class="profile-usertitle">
+						<div class="profile-usertitle-name">ADMIN</div>
+						<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="divider"></div>
+				<form role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+				</form>
+				<ul class="nav menu">
+					<li ><a href="home.html"><em class="fa fa-dashboard">&nbsp;</em> Home</a></li>
+					<li><a href="viewInfo.html"><em class="fa fa-user">&nbsp;</em> Profile</a></li>
+					<li  class="active" ><a href="addGrade.html"><em class="fa fa-bar-chart">&nbsp;</em> Grades</a></li>
+					<li><a href="addSchedule.html"><em class="fa fa-calendar btn-schedule">&nbsp;</em> Schedule</a></li> 
+					<li><a href="addBilling.html"><em class="fa fa-bar-chart">&nbsp;</em> Billing</a></li>		
+					<li><a href="logout.html"><em class="fa fa-power-off btn-logout">&nbsp;</em> Logout</a></li>
+				</ul>
+			</div>
+			<!--/.sidebar-->
+			
+			<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		
+				<div class="panel panel-default">
+				<div class="panel-body" style="overflow-x:auto">
+									
+					<div class="form-group">
+						<label>Semester</label>
+						<select name="sem" class="txtSem form-control">
+							<option value="">--SELECT--</option>
+							<option value="1">1st</option>
+							<option value="2">2nd</option>
+							<option value="3">3rd</option>
+						</select>	
+					</div>
+					
+				</div>	
+				<div class="panel panel-default">
+	
+					<div class="panel-body">        
+						
+							<table class="table  table-responsive" id="dataTable2" width="100%" cellspacing="0">
+								<thead>
+									
+							
+									<th>Course Code</th>
+									<th>Course title</th>
+									<th>Units</th>
+									<th>Grades</th>
+									<th>Academic Year</th>
+									<th>Remarks</th>
+									
+								</thead>
+								<tbody class="grades-row">
+								</tbody>
+							</table>
+							
+					
+					</div>
+				</div>
+						
+			</div>
+			</div>
+			<script src="../js/jquery-3.1.1.js"></script>
+			<script src="../js/bootstrap.min.js"></script>
+			<script src="../js/chart.min.js"></script>
+			<script src="../js/chart-data.js"></script>
+			<script src="../js/easypiechart.js"></script>
+			<script src="../js/easypiechart-data.js"></script>
+			<script src="../js/bootstrap-datepicker.js"></script>
+			<script src="../js/custom.js"></script>
+			<script src="../js/app.js"></script>
+			<script src="../js/data.js"></script>
+			<script>
+				var sem;
+				var degree;
+				var hasData;
+				var student_no = localStorage.getItem("adminuser")
+        
+			getStudentInfo(student_no);
+
+				                    
+$('.search_snum').keyup(function(){
+    var snum = $('.search_snum').val();
+    getStudentInfo(snum);     
+});
+  
+				getStudentById()
+			
+				
+		//		$('.studentno').text(student_no)
+				$('.studentno_txt').val(student_no)							
+				
+				$('.sem').change(function(){
+					
+					sem = $(this).val();
+					
+					getGrades(sem);
+					
+				});
+
+				$('.txtSem').change(function(){
+					
+					sem = $(this).val();
+					
+					viewGrades(sem);
+					
+				});
+
+				function viewGrades(){
+					
+					$('#dataTable2 tbody').empty()
+					var data = "";
+					console.log(student_no)
+					$.ajax({
+						method: "get",
+						dataType: "json",
+						url: apiUrl + "getChecklist.php?sem="+sem+"&studno="+student_no,
+						success: function (result) {
+						
+							if(result.length != 0){
+								$(result).each(function(k,v){
+									data += "<tr class='s-grade-row'  data-grade=''>";
+									
+										data += "<td class='rsubject_id'>"+v.course_code+"<input type='hidden' name='"+v.id+"'></td>";
+										data += "<td>"+v.course_title+"</td>";
+										data += "<td>"+v.units+"</td>";
+										data += "<td>"+v.final_grade+"</td>";
+										data += "<td>"+v.academic_year+"</td>";
+										data += "<td>"+v.remarks+"</td>";
+										// data += "<td><button type='button' class='btn btn-primary update-grade'	 onClick='addgrade("+v.id+")'>Update Grade</button></td>";
+										
+										data += "</tr>";
+									});
+									
+									$('.grades-row').html(data);
+								}
+								
+							},
+							error: function (xhr, status, error) {
+								alert("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+							}
+						});
+						
+					}
+
+
+				function getGrades(){
+					
+					$('#dataTable tbody').empty()
+					var data = "";
+					
+					$.ajax({
+						method: "get",
+						dataType: "json",
+					
+						url: apiUrl + "getChecklist.php?sem="+sem+"&studno="+student_no,
+						success: function (result) {
+							console.log(result)
+							if(result.length != 0){
+							hasData = true;
+								$(result).each(function(k,v){
+									// data += "<tr class='s-grade-row'  data-grade=''>";
+										
+									// 	data += "<td class='rsubject_id'>"+v.course_code+"<input type='hidden' name='"+v.id+"'></td>";
+									// 	data += "<td>"+v.course_title+"</td>";
+									// 	data += "<td>"+v.units+"</td>";
+									// 	data += "<td>"+v.final_grade+"</td>";
+									// 	data += "<td>"+v.academic_year+"</td>";
+									// 	data += "<td>"+v.remarks+"</td>";
+									// 	data += "<td><button type='button' class='btn btn-primary update-grade'	 onClick='addgrade("+v.id+")'>Update Grade</button></td>";
+										
+									// 	data += "</tr>";
+									});
+									
+									$('.grades-row').html(data);
+								
+								}else{
+								hasData = false;
+								}
+								getChecklist(sem);
+								
+							},
+							error: function (xhr, status, error) {
+								alert("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+							}
+						});
+						
+					}
+					
+					
+					function getChecklist(sem){
+						var data = "";
+						$.ajax({
+							method: "get",
+							dataType: "json",
+							url: apiUrl + "getSchedule.php?studentno=" + student_no + "&semester="+sem,
+							success: function (result) {
+								if(!hasData){
+									$(result).each(function(k,v){
+									data += "<tr class='s-grade-row'  data-grade=''>";
+										
+										data += "<td class='rsubject_id'>"+v.course_code+"<input type='hidden' name='"+v.id+"'></td>";
+										data += "<td>"+v.course_title+"</td>";
+										data += "<td>"+v.units+"</td>";
+										data += "<td><input type='number' name='sgra' class='sgrade form-control'></td>";
+										data += "<td><input type='text' name='saye' class='saye form-control'></td>";
+										data += "<td><input type='text' name='srem' class='srem form-control'></td>";
+										data += "<td><button type='button' class='btn btn-primary update-grade'	 onClick='addgrade("+v.id+")'>Update Grade</button></td>";
+										
+										data += "</tr>";
+										
+									});
+									
+									$('.grades-row').append(data);
+								}
+								
+								
+								},
+								error: function (xhr, status, error) {
+									alert("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+								}
+							});
+						}
+						
+						
+						
+						
+						
+						
+						$('.sgrade').keyup(function(){
+							var	grade = $('.sgrade').val()
+							
+						});
+						
+						
+						function addgrade(subjectid){
+							
+							var s_id = subjectid;
+							var grade = $('.sgrade').val();
+							var acadyear = $('.saye').val();
+							var rem = $('.srem').val();
+							var studentno = $('.studentno_txt').val();
+							var sem = $('.sem').val();
+							
+							
+							$.ajax({
+								method: "post",
+								url: apiUrl + "saveGrade.php",
+								data : { 
+									s_id : s_id,
+									grade : grade,
+									acadyear : acadyear,
+									rem : rem,
+									studentno : student_no,
+									sem : sem
+								},
+								success: function (result) {
+									alert(result);
+									//	location.reload()
+									
+								},
+								error: function (xhr, status, error) {
+									alert("status=" + xhr.responseText + ", error=" + status + ", error=" + error);
+								}
+							});
+						}
+						
+					</script>
+				</body>
+				
+				</html>	
